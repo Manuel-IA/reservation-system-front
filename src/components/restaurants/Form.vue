@@ -28,16 +28,24 @@
           />
           <!-- {{field}} -->
         </div>
-        <div v-else>
-          CREATE!!
+        <div v-else v-for="field in fields">
+          <q-input
+            v-if="acceptedFields.includes( field.field )"
+            filled
+            :type="( (field.type) ? field.type : 'text' )"
+            v-model="newInfo[ field.field ]"
+            :label="field.label"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something' ]"
+          />
         </div>
 
       </q-form>
     </q-card-section>
     <q-separator />
     <q-card-actions align="right">
-      <q-btn flat color="red" label="Cencel" @click="onCancel" />
-      <q-btn color="primary" label="Save" @click="onSave" />
+      <q-btn flat color="red" label="Cancel" v-close-popup />
+      <q-btn color="primary" label="Save" @click="onSave" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>
@@ -72,28 +80,53 @@ export default {
   },
   data () {
     return {
-      newInfo: { ...this.item },
+      // If this.item is empty then value is {}, but if this.item is not empty the value is a copy of this.item
+      newInfo: ( (this.item) ? { ...this.item } : {} ),
       refItem: this.item
     }
   },
   computed: {
   },
   methods: {
-    onCancel () {
-      document.getElementById( 'closeDialogBtn' ).click();
-    },
     onSave () {
       if ( this.type == 'edit' ) {
+        const url = `/restaurants/${this.newInfo.id}`;
+        const toSend = { restaurant: { user_id: 1 } };
+
         Object.keys( this.newInfo ).forEach( ( key ) => {
-          this.item[ key ] = this.newInfo[ key ];
+
+          if ( this.acceptedFields.includes( key ) ) {
+            const value = this.newInfo[ key ];
+
+            this.item[ key ] = value;
+            toSend.restaurant[ key ] = value;
+          }
         } );
-      } else {
-        console.log( 'CREATE!!' );
+
+        // Send info to API
+        this.$api.patch( url, toSend ).then( ( response ) => {
+          console.log( response );
+        } );
+      } else if ( this.type == 'create' ) {
+        const url = '/restaurants';
+        const toSend = {
+          restaurant: Object.assign( { user_id: 1 }, { ...this.newInfo } )
+        }
+
+        // Send info to API
+        this.$api.post( url, toSend ).then( ( response ) => {
+          console.log( response );
+
+          // Reload page
+          this.$router.push( '/' ).then( () => {
+            this.$router.push( '/restaurants' );
+          } );
+        } );
       }
 
       // Message
       Notify.create( {
-        message: 'Changes saved!',
+        message: 'Done!',
         color: 'positive',
         position: 'top',
         icon: 'check_circle'

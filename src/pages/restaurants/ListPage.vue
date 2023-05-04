@@ -1,15 +1,15 @@
 <template>
   <!-- <q-page class="flex flex-center"> -->
   <q-page class="">
-    <h1 class="text-center">Hello, World!</h1>
+    <h2 class="text-center">{{title}}</h2>
 
-    <List/>
+    <List :title="title" />
   </q-page>
 </template>
 
 <script>
-// import { defineComponent } from 'vue'
-import List from 'components/List.vue'
+// import { defineComponent } from 'vue';
+import List from 'components/restaurants/List.vue';
 
 export default {
   components: {
@@ -17,6 +17,7 @@ export default {
   },
   setup () {
     return {
+      title: 'Restaurants'
     }
   }
 }

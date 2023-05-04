@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Reservations
+          Reservations System
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
@@ -54,7 +54,13 @@ const linksList = [
     title: 'Restaurants',
     icon: 'storefront',
     caption: 'List',
-    link: '/list'
+    link: '/restaurants'
+  },
+  {
+    title: 'Reservations',
+    icon: 'confirmation_number',
+    caption: 'List',
+    link: '/reservations'
   }
 ]
 

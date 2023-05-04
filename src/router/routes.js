@@ -8,10 +8,24 @@ const routes = [
     ]
   },
   {
-    path: '/list',
+    path: '/login',
+    component: () => import('layouts/BlankLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/login/IndexPage.vue') }
+    ]
+  },
+  {
+    path: '/restaurants',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/ListPage.vue') }
+      { path: '', component: () => import('pages/restaurants/ListPage.vue') }
+    ]
+  },
+  {
+    path: '/reservations',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/reservations/ListPage.vue') }
     ]
   },
 
