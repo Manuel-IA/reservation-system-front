@@ -63,7 +63,7 @@ module.exports = configure(function (/* ctx */) {
       // publicPath: '/',
       // analyze: true,
       env: {
-        API: 'https://manuel.tunnels.tuordenas.com'
+        API: 'https://piranha.reservations-system.c66.me/'
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

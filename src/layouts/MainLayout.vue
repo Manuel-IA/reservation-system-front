@@ -15,7 +15,9 @@
           Reservations System
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn label="logout" color="red" @click="onLogout" />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -46,6 +48,7 @@
 </template>
 
 <script>
+import { auth } from 'src/services/authService'
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 
@@ -64,13 +67,10 @@ const linksList = [
   }
 ]
 
-export default defineComponent({
-  name: 'MainLayout',
-
+export default {
   components: {
     EssentialLink
   },
-
   setup () {
     const leftDrawerOpen = ref(false)
 
@@ -81,6 +81,15 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
+  },
+  methods: {
+    async onLogout () {
+      await auth.logout().then( () => {
+        if ( !auth.isAuthenticated ) {
+          this.$router.push( '/login' );
+        }
+      } );
+    }
   }
-})
+}
 </script>
