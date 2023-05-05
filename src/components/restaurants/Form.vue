@@ -9,7 +9,7 @@
       {{type.charAt( 0 ).toUpperCase() + type.slice( 1 )}} - {{title}}
     </q-card-section>
     <q-card-section>
-      <div class="text-center q-pa-md">
+      <div class="text-center q-pa-md" v-if="item != null">
         <q-img
           :src="item.photo_url"
           style="max-width: 500px; height: 350px;"
