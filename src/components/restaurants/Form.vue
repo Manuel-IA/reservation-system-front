@@ -9,7 +9,13 @@
       {{type.charAt( 0 ).toUpperCase() + type.slice( 1 )}} - {{title}}
     </q-card-section>
     <q-card-section>
-      <!-- <q-img  /> -->
+      <div class="text-center q-pa-md">
+        <q-img
+          :src="item.photo_url"
+          style="max-width: 500px; height: 350px;"
+          fit="cover"
+        />
+      </div>
 
       <q-form
         @submit="onSubmit"
