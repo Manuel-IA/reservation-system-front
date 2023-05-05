@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { useQuasar, Notify } from 'quasar';
+import { useQuasar, Notify, Loading } from 'quasar';
 
 const $q = useQuasar();
 
@@ -111,13 +111,23 @@ export default {
           }
         } );
         this.item.restaurant_id = this.restaurants[ this.restaurant ];
-        console.log( this.restaurant );
+        // console.log( this.restaurant );
 
         // Send info to API
         this.$api.patch( url, toSend ).then( ( response ) => {
-          console.log( response );
+          // console.log( response );
+
+          // Message
+          Notify.create( {
+            message: 'Changes saved!',
+            color: 'positive',
+            position: 'top',
+            icon: 'check_circle'
+          } )
         } );
       } else if ( this.type == 'create' ) {
+        Loading.show();
+
         const url = '/reservations';
         const toSend = {
           reservation: Object.assign( { restaurant_id: this.restaurants[ this.restaurant ] }, { ...this.newInfo } )
@@ -125,22 +135,38 @@ export default {
 
         // Send info to API
         this.$api.post( url, toSend ).then( ( response ) => {
-          console.log( response );
+          // console.log( response );
 
           // Reload page
           this.$router.push( '/' ).then( () => {
             this.$router.push( '/reservations' );
-          } );
+
+            // Message
+            Notify.create( {
+              message: 'Done!',
+              color: 'positive',
+              position: 'top',
+              icon: 'check_circle'
+            } )
+          } )
+        } )
+        .catch( function ( error ) {
+          const customError = error.response.data.restaurant_id[ 0 ];
+
+          console.log( customError );
+
+          // Message
+          Notify.create( {
+            message: customError,
+            color: 'negative',
+            position: 'top',
+            icon: 'cancel'
+          } )
+
+          Loading.hide();
         } );
       }
 
-      // Message
-      Notify.create( {
-        message: 'Done!',
-        color: 'positive',
-        position: 'top',
-        icon: 'check_circle'
-      } )
     }
   }
 }

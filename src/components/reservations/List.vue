@@ -145,7 +145,6 @@ export default {
 
         this.$api.get( '/restaurants' ).then( ( response ) => {
           response.data.forEach( ( restaurant ) => {
-            // console.log( restaurant.name );
             const key = restaurant.name;
             const value = restaurant.id;
 
@@ -178,7 +177,7 @@ export default {
       // Delete of the system
       this.$api.delete( url )
         .then( ( response ) => {
-          console.log( response );
+          // console.log( response );
           this.reloadPage();
         } );
     },
